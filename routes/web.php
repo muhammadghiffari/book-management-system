@@ -6,10 +6,10 @@ use Illuminate\Support\Facades\Route;
 
 // Root returns welcome (status 200) to satisfy ExampleTest
 Route::get('/', function () {
-    return view('welcome'); // pastikan resources/views/welcome.blade.php ada (default Laravel)
+    return view('login'); //
 });
 
-// Dashboard hanya untuk user terverifikasi
+// Dashboard for admin only
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

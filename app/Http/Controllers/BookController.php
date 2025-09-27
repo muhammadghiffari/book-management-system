@@ -53,11 +53,7 @@ class BookController extends Controller
         ]);
 
         if ($request->hasFile('cover_image')) {
-            $image = $request->file('cover_image');
-            $filename = time() . '.' . $image->getClientOriginalExtension();
-
-            Image::make($image)->fit(400, 600)->save(storage_path('app/public/book-covers/' . $filename));
-            $validated['cover_image'] = 'book-covers/' . $filename;
+            $validated['cover_image'] = $request->file('cover_image')->store('book-covers', 'public');
         }
 
         $validated['created_by'] = auth()->id();
@@ -98,16 +94,15 @@ class BookController extends Controller
         ]);
 
         if ($request->hasFile('cover_image')) {
-            $image = $request->file('cover_image');
-            $filename = time() . '.' . $image->getClientOriginalExtension();
-
-            Image::make($image)->fit(400, 600)->save(storage_path('app/public/book-covers/' . $filename));
-            $validated['cover_image'] = 'book-covers/' . $filename;
+            if ($book->cover_image) {
+                Storage::disk('public')->delete($book->cover_image);
+            }
+            $validated['cover_image'] = $request->file('cover_image')->store('book-covers', 'public');
         }
 
         $book->update($validated);
 
-        return redirect()->route('books.index')
+        return redirect()->route('books.show', $book)
             ->with('success', 'Book updated successfully!');
     }
 

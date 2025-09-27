@@ -348,7 +348,7 @@
 
                 <!-- Pagination -->
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-                    {{ $books->appends(request()->query())->links('pagination.custom') }}
+                    {{ $books->appends(request()->query())->links('pagination::tailwind') }}
                 </div>
             @else
                 <!-- Empty State -->
